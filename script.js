@@ -71,35 +71,36 @@ form.addEventListener("submit", async (e) => {
 
   if (!validateStep(4)) return;
 
-  const payload = {
+  const dados = {
     nome: nome.value.trim(),
-    tempo: tempo.value.trim(),
     email: email.value.trim(),
-    telefone: telefone.value.trim()
+    telefone: telefone.value.trim(),
+    tempo: tempo.value.trim()
   };
 
   try {
-    const response = await fetch("https://e-book-zero7.vercel.app/api/rd-conversion", {
+    const response = await fetch("https://zero7-ebook-backend.vercel.app/api/rd-conversion", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(dados)
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
     if (!response.ok) {
-      console.error("Erro RD completo:", data);
-alert(
-  `Não foi possível enviar seus dados agora.\n\n` +
-  `Status: ${response.status}\n` +
-  `Resposta: ${JSON.stringify(data)}`
-);
+      console.error("Erro RD:", result);
+      alert("Não foi possível enviar agora. Tente novamente.");
+      return;
     }
 
     showStep(5);
 
+    // enquanto você ainda não tiver o pdf final:
+    // pode deixar sem download por enquanto
+    // ou comentar esse trecho
+    /*
     setTimeout(() => {
       const link = document.createElement("a");
       link.href = "./assets/ebook.pdf";
@@ -107,10 +108,10 @@ alert(
       document.body.appendChild(link);
       link.click();
       link.remove();
-    }, 600);
-
+    }, 700);
+    */
   } catch (error) {
-    console.error(error);
-    alert("Ocorreu um erro ao enviar o formulário.");
+    console.error("Erro de conexão:", error);
+    alert("Erro de conexão. Tente novamente.");
   }
 });
