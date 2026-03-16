@@ -31,6 +31,8 @@ export default async function handler(req, res) {
       cf_tempo_operando_day_trade: tempo
     };
 
+    console.log("Payload enviado ao RD:", payload);
+
     const response = await fetch("https://api.rd.services/platform/conversions", {
       method: "POST",
       headers: {
@@ -42,10 +44,16 @@ export default async function handler(req, res) {
 
     const responseText = await response.text();
 
+    console.log("Status RD:", response.status);
+    console.log("StatusText RD:", response.statusText);
+    console.log("Resposta bruta RD:", responseText);
+
     if (!response.ok) {
-      return res.status(response.status).json({
+      return res.status(500).json({
         error: "Erro ao enviar lead para o RD Station",
-        details: responseText
+        rd_status: response.status,
+        rd_status_text: response.statusText,
+        details: responseText || "Resposta vazia do RD"
       });
     }
 
@@ -61,6 +69,8 @@ export default async function handler(req, res) {
       rd: parsed
     });
   } catch (error) {
+    console.error("Erro interno:", error);
+
     return res.status(500).json({
       error: "Erro interno no servidor",
       details: error.message
