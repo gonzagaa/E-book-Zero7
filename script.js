@@ -90,9 +90,12 @@ form.addEventListener("submit", async (e) => {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Erro RD:", data);
-      alert("Não foi possível enviar seus dados agora. Tente novamente.");
-      return;
+      console.error("Erro RD completo:", data);
+alert(
+  `Não foi possível enviar seus dados agora.\n\n` +
+  `Status: ${response.status}\n` +
+  `Resposta: ${JSON.stringify(data)}`
+);
     }
 
     showStep(5);
