@@ -66,19 +66,57 @@ telefone.addEventListener("input", (e) => {
   e.target.value = value;
 });
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   if (!validateStep(4)) return;
 
-  showStep(5);
+  const submitButton = form.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
 
-  setTimeout(() => {
-    const link = document.createElement("a");
-    link.href = "./assets/ebook.pdf"; // trocar pelo caminho real
-    link.download = "";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  }, 600);
+  submitButton.disabled = true;
+  submitButton.textContent = "Enviando...";
+
+  const payload = {
+    nome: nome.value.trim(),
+    email: email.value.trim(),
+    telefone: telefone.value.trim(),
+    tempo: tempo.value.trim(),
+  };
+
+  try {
+    const response = await fetch("/api/rd-conversion", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Erro RD:", data);
+      alert("Não foi possível enviar seus dados agora. Tente novamente.");
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+      return;
+    }
+
+    showStep(5);
+
+    setTimeout(() => {
+      const link = document.createElement("a");
+      link.href = "./assets/ebook.pdf";
+      link.download = "";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }, 700);
+  } catch (error) {
+    console.error(error);
+    alert("Ocorreu um erro ao enviar o formulário.");
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+  }
 });
