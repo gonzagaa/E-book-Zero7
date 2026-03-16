@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       }
     };
 
-    const response = await fetch("https://api.rd.services/platform/conversions", {
+    const response = await fetch("https://api.rd.services/platform/events?event_type=conversion", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,6 @@ export default async function handler(req, res) {
       success: true,
       rd: parsed
     });
-
   } catch (error) {
     return res.status(500).json({
       error: "Erro interno no servidor",
