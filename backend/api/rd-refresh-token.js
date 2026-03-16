@@ -1,10 +1,18 @@
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Método não permitido" });
   }
 
   try {
-    const response = await fetch("https://api.rd.services/auth/token", {
+    const rdResponse = await fetch("https://api.rd.services/auth/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,16 +25,7 @@ export default async function handler(req, res) {
       })
     });
 
-    const responseText = await response.text();
-
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: "Erro ao renovar token RD",
-        rd_status: response.status,
-        rd_status_text: response.statusText,
-        details: responseText || "Resposta vazia do RD"
-      });
-    }
+    const responseText = await rdResponse.text();
 
     let parsed;
     try {
@@ -35,12 +34,20 @@ export default async function handler(req, res) {
       parsed = { raw: responseText };
     }
 
+    if (!rdResponse.ok) {
+      return res.status(rdResponse.status).json({
+        error: "Erro ao renovar token da RD",
+        rd_status: rdResponse.status,
+        rd_status_text: rdResponse.statusText,
+        details: parsed
+      });
+    }
+
     return res.status(200).json({
       success: true,
-      message: "Novo token gerado com sucesso",
+      message: "Token renovado com sucesso",
       rd: parsed
     });
-
   } catch (error) {
     return res.status(500).json({
       error: "Erro interno ao renovar token",
