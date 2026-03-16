@@ -97,10 +97,8 @@ form.addEventListener("submit", async (e) => {
 
     showStep(5);
 
-    // enquanto você ainda não tiver o pdf final:
-    // pode deixar sem download por enquanto
-    // ou comentar esse trecho
     /*
+    Quando tiver o PDF final, reativa isso:
     setTimeout(() => {
       const link = document.createElement("a");
       link.href = "./assets/ebook.pdf";
