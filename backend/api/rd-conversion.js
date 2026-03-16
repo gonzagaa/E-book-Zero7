@@ -24,11 +24,10 @@ export default async function handler(req, res) {
     }
 
     const payload = {
-      conversion_identifier: process.env.RD_CONVERSION_IDENTIFIER,
-      email: email.trim(),
-      name: nome.trim(),
-      mobile_phone: telefoneLimpo,
-      cf_tempo_operando_day_trade: tempo
+        conversion_identifier: process.env.RD_CONVERSION_IDENTIFIER,
+        email: email.trim(),
+        name: nome.trim(),
+        mobile_phone: telefoneLimpo
     };
 
     console.log("Payload enviado ao RD:", payload);
