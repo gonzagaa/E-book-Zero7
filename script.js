@@ -71,26 +71,20 @@ form.addEventListener("submit", async (e) => {
 
   if (!validateStep(4)) return;
 
-  const submitButton = form.querySelector('button[type="submit"]');
-  const originalText = submitButton.textContent;
-
-  submitButton.disabled = true;
-  submitButton.textContent = "Enviando...";
-
   const payload = {
     nome: nome.value.trim(),
-    email: email.value.trim(),
-    telefone: telefone.value.trim(),
     tempo: tempo.value.trim(),
+    email: email.value.trim(),
+    telefone: telefone.value.trim()
   };
 
   try {
-    const response = await fetch("/api/rd-conversion", {
+    const response = await fetch("https://ebook-zero7.vercel.app/api/rd-conversion", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();
@@ -98,8 +92,6 @@ form.addEventListener("submit", async (e) => {
     if (!response.ok) {
       console.error("Erro RD:", data);
       alert("Não foi possível enviar seus dados agora. Tente novamente.");
-      submitButton.disabled = false;
-      submitButton.textContent = originalText;
       return;
     }
 
@@ -112,11 +104,10 @@ form.addEventListener("submit", async (e) => {
       document.body.appendChild(link);
       link.click();
       link.remove();
-    }, 700);
+    }, 600);
+
   } catch (error) {
     console.error(error);
     alert("Ocorreu um erro ao enviar o formulário.");
-    submitButton.disabled = false;
-    submitButton.textContent = originalText;
   }
 });
