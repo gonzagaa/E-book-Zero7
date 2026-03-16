@@ -12,8 +12,12 @@ export default async function handler(req, res) {
       });
     }
 
-    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const nomeLimpo = String(nome).trim();
+    const emailLimpo = String(email).trim().toLowerCase();
     const telefoneLimpo = String(telefone).replace(/\D/g, "");
+    const tempoLimpo = String(tempo).trim();
+
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailLimpo);
 
     if (!emailValido) {
       return res.status(400).json({ error: "E-mail inválido" });
@@ -23,22 +27,28 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Telefone inválido" });
     }
 
-    const payload = {
+    const rdBody = {
+      event_type: "CONVERSION",
+      event_family: "CDP",
+      payload: {
         conversion_identifier: process.env.RD_CONVERSION_IDENTIFIER,
-        email: email.trim(),
-        name: nome.trim(),
-        mobile_phone: telefoneLimpo
+        email: emailLimpo,
+        name: nomeLimpo,
+        mobile_phone: telefoneLimpo,
+        cf_tempo_operando_day_trade: tempoLimpo
+      }
     };
 
-    console.log("Payload enviado ao RD:", payload);
+    console.log("Payload enviado ao RD:", rdBody);
 
     const response = await fetch("https://api.rd.services/platform/conversions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "accept": "application/json",
         "x-api-key": process.env.RD_API_KEY
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(rdBody)
     });
 
     const responseText = await response.text();
@@ -48,7 +58,7 @@ export default async function handler(req, res) {
     console.log("Resposta bruta RD:", responseText);
 
     if (!response.ok) {
-      return res.status(500).json({
+      return res.status(response.status).json({
         error: "Erro ao enviar lead para o RD Station",
         rd_status: response.status,
         rd_status_text: response.statusText,
@@ -60,11 +70,12 @@ export default async function handler(req, res) {
     try {
       parsed = JSON.parse(responseText);
     } catch {
-      parsed = { raw: responseText };
+      parsed = { raw: responseText || "Resposta sem JSON" };
     }
 
     return res.status(200).json({
       success: true,
+      message: "Lead enviado ao RD Station com sucesso",
       rd: parsed
     });
   } catch (error) {
