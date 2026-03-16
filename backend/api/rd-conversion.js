@@ -12,12 +12,8 @@ export default async function handler(req, res) {
       });
     }
 
-    const nomeLimpo = String(nome).trim();
-    const emailLimpo = String(email).trim().toLowerCase();
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const telefoneLimpo = String(telefone).replace(/\D/g, "");
-    const tempoLimpo = String(tempo).trim();
-
-    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailLimpo);
 
     if (!emailValido) {
       return res.status(400).json({ error: "E-mail inválido" });
@@ -32,30 +28,24 @@ export default async function handler(req, res) {
       event_family: "CDP",
       payload: {
         conversion_identifier: process.env.RD_CONVERSION_IDENTIFIER,
-        email: emailLimpo,
-        name: nomeLimpo,
+        email: email.trim(),
+        name: nome.trim(),
         mobile_phone: telefoneLimpo,
-        cf_tempo_operando_day_trade: tempoLimpo
+        cf_tempo_operando_day_trade: tempo
       }
     };
-
-    console.log("Payload enviado ao RD:", rdBody);
 
     const response = await fetch("https://api.rd.services/platform/conversions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "accept": "application/json",
-        "x-api-key": process.env.RD_API_KEY
+        "Authorization": `Bearer ${process.env.RD_ACCESS_TOKEN}`
       },
       body: JSON.stringify(rdBody)
     });
 
     const responseText = await response.text();
-
-    console.log("Status RD:", response.status);
-    console.log("StatusText RD:", response.statusText);
-    console.log("Resposta bruta RD:", responseText);
 
     if (!response.ok) {
       return res.status(response.status).json({
@@ -70,17 +60,15 @@ export default async function handler(req, res) {
     try {
       parsed = JSON.parse(responseText);
     } catch {
-      parsed = { raw: responseText || "Resposta sem JSON" };
+      parsed = { raw: responseText };
     }
 
     return res.status(200).json({
       success: true,
-      message: "Lead enviado ao RD Station com sucesso",
       rd: parsed
     });
-  } catch (error) {
-    console.error("Erro interno:", error);
 
+  } catch (error) {
     return res.status(500).json({
       error: "Erro interno no servidor",
       details: error.message
