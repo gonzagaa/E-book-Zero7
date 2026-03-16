@@ -30,16 +30,13 @@ export default async function handler(req, res) {
     const tempoLimpo = String(tempo).trim();
 
     const payloadRD = {
-      event_type: "CONVERSION",
-      event_family: "CDP",
-      payload: {
-        conversion_identifier: "LP - E-book Day Trade",
-        email: emailLimpo,
-        name: nomeLimpo,
-        personal_phone: telefoneLimpo,
-        cf_tempo_operando_day_trade: tempoLimpo
-      }
-    };
+  event_type: "CONVERSION",
+  event_family: "CDP",
+  payload: {
+    conversion_identifier: "LP - E-book Day Trade",
+    email: emailLimpo
+  }
+};
 
     console.log("PAYLOAD ENVIADO AO RD:", JSON.stringify(payloadRD, null, 2));
     console.log("TOKEN EXISTE?", Boolean(process.env.RD_STATION_API_KEY));
