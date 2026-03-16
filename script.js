@@ -79,7 +79,7 @@ form.addEventListener("submit", async (e) => {
   };
 
   try {
-    const response = await fetch("https://ebook-zero7.vercel.app/api/rd-conversion", {
+    const response = await fetch("https://e-book-zero7.vercel.app/api/rd-conversion", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
