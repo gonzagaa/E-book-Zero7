@@ -87,18 +87,27 @@ form.addEventListener("submit", async (e) => {
       body: JSON.stringify(dados)
     });
 
-    const result = await response.json();
+    const text = await response.text();
+    let result;
+
+    try {
+      result = JSON.parse(text);
+    } catch {
+      result = { raw: text };
+    }
+
+    console.log("STATUS:", response.status);
+    console.log("RESPOSTA:", result);
 
     if (!response.ok) {
-      console.error("Erro RD:", result);
-      alert("Não foi possível enviar agora. Tente novamente.");
+      alert("Erro ao enviar formulário.");
       return;
     }
 
     showStep(5);
 
     /*
-    Quando tiver o PDF final, reativa isso:
+    Quando tiver o PDF final:
     setTimeout(() => {
       const link = document.createElement("a");
       link.href = "./assets/ebook.pdf";
@@ -109,7 +118,7 @@ form.addEventListener("submit", async (e) => {
     }, 700);
     */
   } catch (error) {
-    console.error("Erro de conexão:", error);
+    console.error("Erro de conexão real:", error);
     alert("Erro de conexão. Tente novamente.");
   }
 });
