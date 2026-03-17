@@ -373,7 +373,6 @@
 
 #quiz .loading {
   width: 100%;
-  max-width: 24rem;
   height: 0.6rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
@@ -383,16 +382,23 @@
 
 #quiz .loading span {
   display: block;
-  width: 35%;
+  width: 0%;
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(135deg, #0c77d6, #18a9ff);
-  animation: quizLoading 1.1s ease-in-out infinite;
 }
 
-@keyframes quizLoading {
-  0% { transform: translateX(-120%); }
-  100% { transform: translateX(350%); }
+#quiz .final-step.active .loading span {
+  animation: quizLoadingComplete 4s ease forwards;
+}
+
+@keyframes quizLoadingComplete {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
 }
 
 #quiz select {
