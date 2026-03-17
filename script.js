@@ -105,9 +105,6 @@ form.addEventListener("submit", async (e) => {
     }
 
     showStep(5);
-
-    /*
-    Quando tiver o PDF final:
     setTimeout(() => {
       const link = document.createElement("a");
       link.href = "./assets/ebook.pdf";
@@ -116,7 +113,7 @@ form.addEventListener("submit", async (e) => {
       link.click();
       link.remove();
     }, 700);
-    */
+    
   } catch (error) {
     console.error("Erro de conexão real:", error);
     alert("Erro de conexão. Tente novamente.");
