@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero7 - E-book: IA no Day Trade</title>
+  <link rel="shortcut icon" href="" type="image/x-icon">
+
+  <link rel="shortcut icon" href="../assets/favicon zero7.webp" type="image/x-icon">
+  <link href="https://fonts.cdnfonts.com/css/ncs-radhiumz" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/tt-fors-trial" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link rel="canonical" href="https://zero7.com.br/home">
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-KCJQPMC');</script>
+  <!-- End Google Tag Manager -->
+
+  <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
+
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="../css/index.css?v=81a8wefqwdwq435f32d">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://zero7.com.br/" />
+  <meta property="og:image" content="https://zero7.com.br/home/assets/banner.webp" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://zero7.com.br/" />
+  <meta property="twitter:image" content="https://zero7.com.br/home/assets/banner.webp" />
+
+  <!-- Autor e Indexação -->
+  <meta name="author" content="LocalBoost" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://zero7.com.br/">
+
+  <link rel="sitemap" type="application/xml" href="../sitemap.xml">
+</head>
+
+<body id="body" class="smooth-scroll-wrapper">
+
+  <section id="quiz" class="download-page">
+    <div class="bg">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+      <span class="grid"></span>
+      <span class="vignette"></span>
+    </div>
+
+    <div class="container">
+      <div class="head">
+        <img src="../assets/logo zero7.svg" alt="Zero7">
+        <p><strong>Olá!</strong></p>
+        <p>Precisamos de algumas informações para enviarmos seu e-book de forma gratuita.</p>
+      </div>
+
+      <div class="border">
+        <div class="card">
+          <div class="final-step active">
+            <h2>O download do E-book está sendo feito.</h2>
+            <p>Confira o arquivo em “Seus downloads”.</p>
+
+            <div class="loading">
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const ebookUrl = "../assets/ebook.pdf";
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const link = document.createElement("a");
+    link.href = ebookUrl;
+    link.download = "";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }, 300);
+});
+  </script>
+
+  <!-- Google Tag Manager (noscriptt) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KCJQPMC" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <script>
+  // gera e guarda o eventID ANTES para casar Pixel + API
+  window.__eventID = '_' + Math.random().toString(36).slice(2, 11);
+
+  function pixelReady() {
+    return typeof window.fbq === 'function' && window.fbq.loaded;
+  }
+
+  function safeTrackPageView() {
+    if (!pixelReady()) return false;
+    fbq('track', 'PageView', {}, { eventID: window.__eventID });
+    console.log('📤 Pixel PageView enviado com eventID:', window.__eventID);
+    return true;
+  }
+
+  window.addEventListener('DOMContentLoaded', function () {
+    // tenta por até ~3s (20 tentativas × 150ms)
+    let tries = 0;
+    const iv = setInterval(function () {
+      tries++;
+      if (safeTrackPageView() || tries > 20) clearInterval(iv);
+    }, 150);
+  });
+  </script>
+
+  <script>
+  function getFbp() {
+    const existing = localStorage.getItem('_fbp');
+    if (existing) return existing;
+    const fbp = 'fb.1.' + Date.now() + '.' + Math.floor(Math.random() * 1e10);
+    localStorage.setItem('_fbp', fbp);
+    return fbp;
+  }
+
+  function getFbc() {
+    const fbclid = new URLSearchParams(window.location.search).get('fbclid');
+    if (!fbclid) return '';
+    return 'fb.1.' + Date.now() + '.' + fbclid;
+  }
+
+  function sendCapiPageView() {
+    const fbp = getFbp();
+    const fbc = getFbc();
+
+    fetch('https://backend-api-zero7.vercel.app/api/send-event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event_name: 'PageView',
+        event_id: window.__eventID,           // <<< MESMO ID do Pixel
+        fbp,
+        fbc,
+        email: 'anonimo@teste.com'
+      })
+    })
+    .then(r => r.json())
+    .then(d => console.log('📥 Resposta API Facebook:', d))
+    .catch(e => console.error('❌ Erro na chamada da API:', e));
+  }
+
+  // mantenha o envio da API no DOMContentLoaded
+  window.addEventListener('DOMContentLoaded', sendCapiPageView);
+  </script>
+
+  <script>
+    let prefix = ["https://app.4st.com.br"];
+
+    function getParams() {
+      let t = "",
+        e = window.top.location.href,
+        r = new URL(e);
+      if (null != r) {
+        let a = r.searchParams.get("utm_source"),
+          n = r.searchParams.get("utm_medium"),
+          o = r.searchParams.get("utm_campaign"),
+          m = r.searchParams.get("utm_term"),
+          c = r.searchParams.get("utm_content"); - 1 !== e.indexOf("?") && (t = `&sck=${a}|${n}|${o}|${m}|${c}`), console.log(t)
+      }
+      return t
+    } ! function () {
+      var t = new URLSearchParams(window.location.search);
+      t.toString() && document.querySelectorAll("a").forEach(function (e) {
+        for (let r = 0; r < prefix.length; r++) - 1 !== e.href.indexOf(prefix[r]) && (-1 === e.href.indexOf("?") ? e.href += "?" + t.toString() + getParams() : e.href += "&" + t.toString() + getParams())
+      })
+    }();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script>
+    // Initialize Lenis with options
+    const lenis = new Lenis({
+      smooth: true, // Ativa o scroll suave
+      duration: 1.1, // Define a duração do scroll (maior valor deixa mais lento)
+      easing: (t) => 1 - Math.pow(1 - t, 4), // Função de easing para suavidade
+    });
+
+    // Listen for the scroll event and log the event data
+    lenis.on("scroll", (e) => {
+      console.log(e);
+    });
+
+    // Use requestAnimationFrame to continuously update the scroll
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.9.3/countUp.min.js"></script>
+
+  <script>
+(() => {
+  // Lista de prazos (fuso de Brasília -03:00)
+  const prazosPromo = [
+    new Date("2026-02-08T23:59:59-03:00"),
+  ];
+
+  const root = document.getElementById("countdownPromo");
+  if (!root) return;
+
+  const diasEl = document.getElementById("diasPromo");
+  const horasEl = document.getElementById("horasPromo");
+  const minutosEl = document.getElementById("minutosPromo");
+  const segundosEl = document.getElementById("segundosPromo");
+
+  const pad2 = (n) => String(n).padStart(2, "0");
+
+  function getPrazoAtual(agora) {
+    // pega o primeiro prazo que ainda não passou
+    return prazosPromo.find((prazo) => prazo.getTime() > agora.getTime()) || null;
+  }
+
+  function tickPromo() {
+    const agora = new Date();
+    const fimPromo = getPrazoAtual(agora);
+
+    // Se não tiver mais nenhum prazo futuro, some com o timer
+    if (!fimPromo) {
+      clearInterval(intervaloPromo);
+      root.style.display = "none";
+      return;
+    }
+
+    const diff = fimPromo - agora;
+
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diff % (1000 * 60)) / 1000);
+
+    diasEl.textContent = pad2(dias);
+    horasEl.textContent = pad2(horas);
+    minutosEl.textContent = pad2(minutos);
+    segundosEl.textContent = pad2(segundos);
+  }
+
+  const intervaloPromo = setInterval(tickPromo, 1000);
+  tickPromo(); // inicializa
+})();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const optionsBase = {
+        useEasing: true,
+        separator: '.',
+        decimal: ',',
+      };
+
+      const optionsAno = {
+        ...optionsBase,
+        useGrouping: false // sem ponto em 2023
+      };
+
+      const optionsTraders = {
+        ...optionsBase,
+        prefix: "+",
+        useGrouping: true
+      };
+
+      const optionsPagamentos = {
+        ...optionsBase,
+        prefix: "+",
+        useGrouping: true
+      };
+
+      const createAnimations = () => {
+        const ano = new CountUp("ano", 0, 2023, 0, 3, optionsAno);
+        const traders = new CountUp("traders", 0, 20, 0, 3, optionsTraders);
+        const pagamentos = new CountUp("pagamentos", 0, 12, 0, 3, optionsPagamentos);
+
+        if (!ano.error) ano.start();
+        if (!traders.error) traders.start();
+        if (!pagamentos.error) pagamentos.start();
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            createAnimations(); // annnimma novamente sempre que a seção voltar à viewport
+          }
+        });
+      });
+
+      observer.observe(document.querySelector('#ano'));
+    });
+  </script>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="../script.js"></script>
+
+  <script>
+    AOS.init(
+  {
+      duration: 1200,
+  }
+);
+  </script>
+</body>
+</html>

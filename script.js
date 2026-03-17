@@ -104,16 +104,7 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    showStep(5);
-    setTimeout(() => {
-      const link = document.createElement("a");
-      link.href = "./assets/ebook.pdf";
-      link.download = "";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    }, 700);
-    
+    window.location.href = "./download";
   } catch (error) {
     console.error("Erro de conexão real:", error);
     alert("Erro de conexão. Tente novamente.");
