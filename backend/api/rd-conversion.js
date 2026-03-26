@@ -72,7 +72,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { nome, email, telefone, tempo } = req.body || {};
+    const {
+    nome,
+    email,
+    telefone,
+    tempo,
+    utm_campaign,
+    utm_content,
+    utm_id,
+    utm_medium,
+    utm_source,
+    utm_term
+  } = req.body || {};
 
     if (!nome || !email || !telefone || !tempo) {
       return res.status(400).json({
@@ -95,12 +106,18 @@ export default async function handler(req, res) {
       event_type: "CONVERSION",
       event_family: "CDP",
       payload: {
-        conversion_identifier: process.env.RD_CONVERSION_IDENTIFIER,
-        email: email.trim(),
-        name: nome.trim(),
-        mobile_phone: telefoneLimpo,
-        cf_tempo_operando_day_trade: tempo
-      }
+  conversion_identifier: process.env.RD_CONVERSION_IDENTIFIER,
+  email: email.trim(),
+  name: nome.trim(),
+  mobile_phone: telefoneLimpo,
+  cf_tempo_operando_day_trade: tempo,
+  cf_utm_campaign: utm_campaign || "",
+  cf_utm_content: utm_content || "",
+  cf_utm_id: utm_id || "",
+  cf_utm_medium: utm_medium || "",
+  cf_utm_source: utm_source || "",
+  cf_utm_term: utm_term || ""
+}
     };
 
     // 1) tenta com o access token atual

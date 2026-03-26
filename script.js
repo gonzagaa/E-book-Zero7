@@ -1,3 +1,37 @@
+function saveUtmParams() {
+  const params = new URLSearchParams(window.location.search);
+
+  const utmKeys = [
+    "utm_campaign",
+    "utm_content",
+    "utm_id",
+    "utm_medium",
+    "utm_source",
+    "utm_term"
+  ];
+
+  utmKeys.forEach((key) => {
+    const value = params.get(key);
+
+    if (value && value.trim() !== "") {
+      localStorage.setItem(key, value.trim());
+    }
+  });
+}
+
+function getSavedUtms() {
+  return {
+    utm_campaign: localStorage.getItem("utm_campaign") || "",
+    utm_content: localStorage.getItem("utm_content") || "",
+    utm_id: localStorage.getItem("utm_id") || "",
+    utm_medium: localStorage.getItem("utm_medium") || "",
+    utm_source: localStorage.getItem("utm_source") || "",
+    utm_term: localStorage.getItem("utm_term") || ""
+  };
+}
+
+saveUtmParams();
+
 const steps = document.querySelectorAll("#quiz .step");
 const nextButtons = document.querySelectorAll("#quiz .next");
 const backButtons = document.querySelectorAll("#quiz .back");
@@ -71,11 +105,14 @@ form.addEventListener("submit", async (e) => {
 
   if (!validateStep(4)) return;
 
+  const utms = getSavedUtms();
+
   const dados = {
     nome: nome.value.trim(),
     email: email.value.trim(),
     telefone: telefone.value.trim(),
-    tempo: tempo.value.trim()
+    tempo: tempo.value.trim(),
+    ...utms
   };
 
   try {
@@ -99,12 +136,12 @@ form.addEventListener("submit", async (e) => {
     console.log("STATUS:", response.status);
     console.log("RESPOSTA:", result);
 
-    if (!response.ok) {
+    if (!response.ok || !result.success) {
       alert("Erro ao enviar formulário.");
       return;
     }
 
-    window.location.href = "./download";
+    window.location.href = "/ia-no-day-trade/download";
   } catch (error) {
     console.error("Erro de conexão real:", error);
     alert("Erro de conexão. Tente novamente.");
